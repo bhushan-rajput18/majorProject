@@ -12,12 +12,12 @@
 
     <div class="mb-3">
         <lable for="description" class="form-label"> Description </lable> <br> 
-        <textarea name="listing[description]" value="<%= listing.description %>" type="text" class="form-control"> </textarea>
+        <input name="listing[description]" value="<%= listing.description %>" type="text" class="form-control">
     </div>
 
     <div class="mb-3">
         <lable for="image" class="form-label"> Image Link </lable> <br> 
-        <input name="listing[image]" value="<%= listing.image %>" type="text" class="form-control">
+        <input name="listing[image[url]]" value="<%= listing.image.url %>" type="text" class="form-control">
     </div>
 
     <div class="row">
