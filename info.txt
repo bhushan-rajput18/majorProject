@@ -58,3 +58,12 @@ show.ejs (in case code goes wrong )
         <button>Delete this listing</button>
     </form>
 </body>
+
+import wrapAsync from "./utils/wrapAsync.js";
+
+app.post("/listings", wrapAsync(async (req, res) => {
+    const newListing = new Listing(req.body.listing);
+    await newListing.save();
+    res.redirect("/listings");
+    })
+);
