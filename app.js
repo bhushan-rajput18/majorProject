@@ -8,6 +8,7 @@ import path from 'path';
 import  methodOverride  from 'method-override';
 import wrapAsync from "./utils/wrapAsync.js";
 import ExpressError from "./utils/ExpressError.js";
+import { listingSchema } from "./schema.js";
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -42,6 +43,18 @@ app.get("/", (req, res) => {
     res.send("getting req");
 });
 
+const validateListing = (req, res, next) => {
+    const { error } = listingSchema.validate(req.body);
+
+    let errMsg = error.details.map((el) => el.message).join(",");
+
+    if(error) {
+        throw new ExpressError(400, errMsg);
+    } else {
+        next();
+    }
+}
+
 //index Route
 app.get("/listings", wrapAsync(async (req, res) => {
     const allListings = await Listing.find({});
@@ -64,11 +77,15 @@ app.get("/listings/:id", wrapAsync(async (req, res) => {
 );
 
 //create
-app.post("/listings", wrapAsync(async (req, res) => {
+app.post("/listings", validateListing, wrapAsync(async (req, res) => {
 
-    if (!req.body || !req.body.listing) {
-        throw new ExpressError(400, "Send valid data for listing");
+    let result = listingSchema.validate(req.body);
+    console.log(result);
+
+    if(result.error){
+        throw new ExpressError(400, result.error);
     }
+
     const newListing = new Listing(req.body.listing);
     await newListing.save();
     res.redirect("/listings");
@@ -85,7 +102,7 @@ app.get("/listings/:id/edit", wrapAsync(async (req, res) => {
 );
 
 //update route
-app.put("/listings/:id", wrapAsync(async (req, res) => {
+app.put("/listings/:id", validateListing, wrapAsync(async (req, res) => {
     if (!req.body || !req.body.listing) {
         throw new ExpressError(400, "Send valid data for listing");
     }
