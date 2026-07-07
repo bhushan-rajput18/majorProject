@@ -79,3 +79,5 @@ const validateReview = (req, res, next) => {
         next();
     }
 }
+
+<li> <%= review.comment %> , <%= review.rating %> stars</li>
