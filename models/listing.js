@@ -37,10 +37,10 @@ let listingSchema = new Schema ({
 },
     location: String,
     country: String,
-    review: {
+    reviews: [{
         type: Schema.Types.ObjectId,
-        ref: "review,"
-    }
+        ref: "Review"
+    }]
 });
 
 //creating model with one line

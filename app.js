@@ -9,6 +9,8 @@ import  methodOverride  from 'method-override';
 import wrapAsync from "./utils/wrapAsync.js";
 import ExpressError from "./utils/ExpressError.js";
 import { listingSchema } from "./schema.js";
+import Review from "./models/review.js";
+
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -120,6 +122,20 @@ app.delete("/listings/:id", wrapAsync(async (req, res) => {
     res.redirect("/listings")
 })
 );
+
+//reviews post route
+app.post("/listings/:id/reviews", async(req,res) => {
+
+    let listing = await Listing.findById(req.params.id);
+    let newReview = new Review(req.body.review);
+
+    listing.reviews.push(newReview);
+
+    await newReview.save()
+    await listing.save()
+
+    res.redirect(`/listings/${listing._id}`)
+})
 
 
 // app.get("/testListing", async (req, res) => {
