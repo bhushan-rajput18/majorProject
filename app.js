@@ -8,7 +8,7 @@ import path from 'path';
 import  methodOverride  from 'method-override';
 import wrapAsync from "./utils/wrapAsync.js";
 import ExpressError from "./utils/ExpressError.js";
-import { listingSchema } from "./schema.js";
+import { listingSchema, reviewSchema } from "./schema.js";
 import Review from "./models/review.js";
 
 
@@ -56,6 +56,17 @@ const validateListing = (req, res, next) => {
         next();
     }
 }
+
+const validateReview = (req, res, next) => {
+    const { error } = reviewSchema.validate(req.body);
+
+    if (error) {
+        let errMsg = error.details.map((el) => el.message).join(",");
+        throw new ExpressError(400, errMsg);
+    }
+
+    next();
+};
 
 //index Route
 app.get("/listings", wrapAsync(async (req, res) => {
@@ -124,7 +135,7 @@ app.delete("/listings/:id", wrapAsync(async (req, res) => {
 );
 
 //reviews post route
-app.post("/listings/:id/reviews", async(req,res) => {
+app.post("/listings/:id/reviews", validateReview, wrapAsync(async(req,res) => {
 
     let listing = await Listing.findById(req.params.id);
     let newReview = new Review(req.body.review);
@@ -135,7 +146,7 @@ app.post("/listings/:id/reviews", async(req,res) => {
     await listing.save()
 
     res.redirect(`/listings/${listing._id}`)
-})
+}))
 
 
 // app.get("/testListing", async (req, res) => {
