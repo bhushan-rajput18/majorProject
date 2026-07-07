@@ -37,6 +37,10 @@ let listingSchema = new Schema ({
 },
     location: String,
     country: String,
+    review: {
+        type: Schema.Types.ObjectId,
+        ref: "review,"
+    }
 });
 
 //creating model with one line
