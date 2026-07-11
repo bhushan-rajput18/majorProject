@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import  methodOverride  from 'method-override';
 import ExpressError from "./utils/ExpressError.js";
+import session from 'express-session';
 
 // getting following from routes folder
 import listings from "./routes/listing.js"
@@ -41,6 +42,15 @@ async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/wanderlust');
 }
 //....................................................
+
+const sessionOptions = {
+    secret: "mysupersecret",
+    resave: false, 
+    saveUninitialized: true
+}
+
+app.use(session(sessionOptions))
+
 
 app.get("/", (req, res) => {
     res.send("getting req");
