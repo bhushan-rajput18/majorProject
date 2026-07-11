@@ -9,6 +9,7 @@ import path from 'path';
 import  methodOverride  from 'method-override';
 import ExpressError from "./utils/ExpressError.js";
 import session from 'express-session';
+import flash from 'connect-flash';
 
 // getting following from routes folder
 import listings from "./routes/listing.js"
@@ -54,12 +55,18 @@ const sessionOptions = {
     },
 }
 
-app.use(session(sessionOptions))
-
-
 app.get("/", (req, res) => {
     res.send("getting req");
 });
+
+
+app.use(session(sessionOptions))
+app.use(flash())
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    next();
+})
 
 //needed to acquire route files
 app.use("/listings", listings);

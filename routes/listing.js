@@ -4,6 +4,7 @@ import wrapAsync from "../utils/wrapAsync.js";
 import ExpressError from "../utils/ExpressError.js";
 import { listingSchema, reviewSchema } from "../schema.js";
 import Listing from "../models/listing.js";
+import { appendFile } from 'fs';
 
 
 const validateListing = (req, res, next) => {
@@ -50,6 +51,7 @@ router.post("/", validateListing, wrapAsync(async (req, res) => {
 
     const newListing = new Listing(req.body.listing);
     await newListing.save();
+    req.flash("success", "new listing created ")
     res.redirect("/listings");
     })
 );
