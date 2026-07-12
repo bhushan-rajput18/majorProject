@@ -12,11 +12,12 @@ import session from 'express-session';
 import flash from 'connect-flash';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
-import user from "./models/user.js"
+import User from "./models/user.js"
 
 // getting following from routes folder
-import listings from "./routes/listing.js"
-import reviews from "./routes/review.js"
+import listingRouter from "./routes/listing.js"
+import reviewRouter from "./routes/review.js"
+import userRouter from "./routes/user.js"
 
 //needed for above to run smoothly
 const __filename = fileURLToPath(import.meta.url);
@@ -33,6 +34,7 @@ app.set("views", path.join(__dirname, "views"));
 
 //connecting mongoose
 import mongoose from 'mongoose';
+import { register } from 'module';
 
 main()
     .then(() => {
@@ -68,10 +70,10 @@ app.use(flash())
 
 app.use(passport.initialize())
 app.use(passport.session())
-passport.use(new LocalStrategy(user.authenticate()));
+passport.use(new LocalStrategy(User.authenticate()));
 
-passport.serializeUser(user.serializeUser());
-passport.deserializeUser(user.deserializeUser());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
     res.locals.success = req.flash("success");
@@ -79,9 +81,21 @@ app.use((req, res, next) => {
     next();
 })
 
+app.get("/demouser", async(req, res) => {
+    let fakeUser = new User({
+        email: "bhavrao@123",
+        username: "bhavrao patil",
+    })
+
+    let registeredUser = await User.register(fakeUser, "helloWorld");
+    res.send(registeredUser);
+})
+
+
 //needed to acquire route files
-app.use("/listings", listings);
-app.use("/listings/:id/reviews", reviews)
+app.use("/listings", listingRouter);
+app.use("/listings/:id/reviews", reviewRouter)
+app.use("/", userRouter)
 
 app.use((req, res, next) => {
     next(new ExpressError(404, "page not found"));
