@@ -10,6 +10,9 @@ import  methodOverride  from 'method-override';
 import ExpressError from "./utils/ExpressError.js";
 import session from 'express-session';
 import flash from 'connect-flash';
+import passport from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
+import user from "./models/user.js"
 
 // getting following from routes folder
 import listings from "./routes/listing.js"
@@ -62,6 +65,13 @@ app.get("/", (req, res) => {
 
 app.use(session(sessionOptions))
 app.use(flash())
+
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new LocalStrategy(user.authenticate()));
+
+passport.serializeUser(user.serializeUser());
+passport.deserializeUser(user.deserializeUser());
 
 app.use((req, res, next) => {
     res.locals.success = req.flash("success");
