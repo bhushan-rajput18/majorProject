@@ -5,6 +5,7 @@ import ExpressError from "../utils/ExpressError.js";
 import { listingSchema, reviewSchema } from "../schema.js";
 import Listing from "../models/listing.js";
 import { appendFile } from 'fs';
+import { isLoggedIn } from "../middleware.js";
 
 
 const validateListing = (req, res, next) => {
@@ -26,7 +27,7 @@ router.get("/", wrapAsync(async (req, res) => {
 );
 
 //new route
-router.get("/new", (req,res) => {
+router.get("/new", isLoggedIn, (req,res) => {
     res.render("listings/new.ejs");
 })
 
@@ -62,7 +63,7 @@ router.post("/", validateListing, wrapAsync(async (req, res) => {
 
 
 //edit route
-router.get("/:id/edit", wrapAsync(async (req, res) => {
+router.get("/:id/edit", isLoggedIn, wrapAsync(async (req, res) => {
     let {id} = req.params;
     const listing = await Listing.findById(id);
     if(!listing) {
@@ -74,7 +75,7 @@ router.get("/:id/edit", wrapAsync(async (req, res) => {
 );
 
 //update route
-router.put("/:id", validateListing, wrapAsync(async (req, res) => {
+router.put("/:id", isLoggedIn, validateListing, wrapAsync(async (req, res) => {
     if (!req.body || !req.body.listing) {
         throw new ExpressError(400, "Send valid data for listing");
     }
@@ -86,7 +87,7 @@ router.put("/:id", validateListing, wrapAsync(async (req, res) => {
 );
 
 //delete route
-router.delete("/:id", wrapAsync(async (req, res) => {
+router.delete("/:id", isLoggedIn, wrapAsync(async (req, res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);
     req.flash("success", "listing deleted ")
