@@ -11,13 +11,14 @@
     >
 
     <div class="card-body">
-        <p class="card-text"> 
-            <%= listing.description %> <br>
-            <%= listing.image.url %> <br>
-            &#x20B9;<%= listing.price %> <br>
-            <%= listing.country  %> <br>
-            <%= listing.location  %> <br>
-        </p>
+        <p class="card-text"> Owned by : <i> <%= listing.owner.username %> </i> <br> </p>
+            
+            <p><%= listing.description %> <br></p> 
+            <p> <%= listing.image.url %> <br> </p>
+            <p> &#x20B9;<%= listing.price %> <br> </p>
+            <p> <%= listing.country  %> <br> </p>
+            <p> <%= listing.location  %> <br> </p>
+        
     </div>
 </div>
 
