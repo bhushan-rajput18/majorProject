@@ -4,7 +4,7 @@ import wrapAsync from "../utils/wrapAsync.js";
 import ExpressError from "../utils/ExpressError.js";
 import Review from "../models/review.js";
 import Listing from "../models/listing.js";
-import { validateReview } from '../middleware.js';
+import { isReviewAuthor, validateReview } from '../middleware.js';
 import { listingSchema, reviewSchema } from "../schema.js";
 import { isLoggedIn, isOwner, validateListing } from "../middleware.js";
 
@@ -26,7 +26,7 @@ router.post("/", isLoggedIn ,validateReview, wrapAsync(async(req,res) => {
 }))
 
 // Delete review
-router.delete("/:reviewId", wrapAsync(async(req, res) => {
+router.delete("/:reviewId", isLoggedIn, isReviewAuthor, wrapAsync(async(req, res) => {
     let { id, reviewId } = req.params;
     await Review.findById(reviewId);
     
