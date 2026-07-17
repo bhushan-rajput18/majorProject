@@ -4,7 +4,7 @@ import wrapAsync from "../utils/wrapAsync.js";
 import Listing from "../models/listing.js";
 import { appendFile } from 'fs';
 import { isLoggedIn, isOwner, validateListing } from "../middleware.js";
-
+import { listingSchema } from "../schema.js";
 
 
 //index Route
@@ -35,7 +35,6 @@ router.get("/:id", wrapAsync(async (req, res) => {
 
 //create
 router.post("/", validateListing, wrapAsync(async (req, res) => {
-
     let result = listingSchema.validate(req.body);
     console.log(result);
 

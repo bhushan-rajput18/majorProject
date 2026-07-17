@@ -5,15 +5,18 @@ import ExpressError from "../utils/ExpressError.js";
 import Review from "../models/review.js";
 import Listing from "../models/listing.js";
 import { validateReview } from '../middleware.js';
+import { listingSchema, reviewSchema } from "../schema.js";
+import { isLoggedIn, isOwner, validateListing } from "../middleware.js";
 
 
 
 //reviews post route
-router.post("/", validateReview, wrapAsync(async(req,res) => {
+router.post("/", isLoggedIn ,validateReview, wrapAsync(async(req,res) => {
 
     let listing = await Listing.findById(req.params.id);
     let newReview = new Review(req.body.review);
-
+    newReview.author = req.user._id;
+    console.log(newReview)
     listing.reviews.push(newReview);
 
     await newReview.save()
