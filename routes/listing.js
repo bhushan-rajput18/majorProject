@@ -5,14 +5,11 @@ import Listing from "../models/listing.js";
 import { appendFile } from 'fs';
 import { isLoggedIn, isOwner, validateListing } from "../middleware.js";
 import { listingSchema } from "../schema.js";
+import listingController from "../controllers/listings.js"
 
 
 //index Route
-router.get("/", wrapAsync(async (req, res) => {
-    const allListings = await Listing.find({});
-    res.render("listings/index.ejs" ,{allListings});
-})
-);
+router.get("/", wrapAsync(listingController.index) )
 
 //new route
 router.get("/new", isLoggedIn, (req,res) => {
