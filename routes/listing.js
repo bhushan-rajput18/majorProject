@@ -7,27 +7,26 @@ import { isLoggedIn, isOwner, validateListing } from "../middleware.js";
 import { listingSchema } from "../schema.js";
 import listingController from "../controllers/listings.js"
 
-
-//index Route
-router.get("/", wrapAsync(listingController.index) )
+//index & create route (merged with router.route ..)
+router.route("/")
+ .get( wrapAsync(listingController.index))
+ .post( validateListing, wrapAsync(listingController.createListing)
+);
 
 //new route
 router.get("/new", isLoggedIn, listingController.renderNewForm)
 
-//show route
-router.get("/:id", wrapAsync(listingController.showListing))
+//show , update and create route (merged with route.route...)
+router.route("/:id")
+ .get( wrapAsync(listingController.showListing))
+ .put( isLoggedIn, isOwner, validateListing, wrapAsync(listingController.updateListing))
+ .delete( isLoggedIn, wrapAsync(listingController.destroyListing)
+);
 
-//create
-router.post("/", validateListing, wrapAsync(listingController.createListing))
 
 
 //edit route
 router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(listingController.renderEditForm))
 
-//update route
-router.put("/:id", isLoggedIn, isOwner, validateListing, wrapAsync(listingController.updateListing))
-
-//delete route
-router.delete("/:id", isLoggedIn, wrapAsync(listingController.destroyListing))
 
 export default router;
