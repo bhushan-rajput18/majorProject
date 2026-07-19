@@ -1,5 +1,10 @@
-//most imp
+import dotenv from 'dotenv';
+if(process.env.NODE_ENV != "production") {
+    dotenv.config();
+}
 
+
+//most imp
 import express from 'express';
 import ejsMate from 'ejs-mate';
 const app = express();
