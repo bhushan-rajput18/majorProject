@@ -5,13 +5,20 @@ import Listing from "../models/listing.js";
 import { appendFile } from 'fs';
 import { isLoggedIn, isOwner, validateListing } from "../middleware.js";
 import { listingSchema } from "../schema.js";
-import listingController from "../controllers/listings.js"
+import listingController from "../controllers/listings.js";
+import multer from 'multer';
+
+// Specify the destination folder for uploaded files
+const upload = multer({ dest: 'uploads/' });
 
 //index & create route (merged with router.route ..)
 router.route("/")
  .get( wrapAsync(listingController.index))
- .post( validateListing, wrapAsync(listingController.createListing)
-);
+//  .post( validateListing, wrapAsync(listingController.createListing))
+ .post( upload.single('listing[image][url]') ,(req, res) => {
+    res.send(req.file);
+ })
+
 
 //new route
 router.get("/new", isLoggedIn, listingController.renderNewForm)
