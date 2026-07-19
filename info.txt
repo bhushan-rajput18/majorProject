@@ -168,3 +168,12 @@ app.get("/", (req, res) => {
     console.dir(req.cookies)
     res.send("hii i am a root !")
 })
+
+ .post( upload.single('listing[image]') ,(req, res) => {
+    res.send(req.file);
+ })
+
+app.use((err, req, res, next) => {
+    let { statusCode = 500, message = "something is wrong" } = err;
+    res.status(statusCode).render("error.ejs", {message});
+});

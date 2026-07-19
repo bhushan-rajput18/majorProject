@@ -7,15 +7,16 @@ import { isLoggedIn, isOwner, validateListing } from "../middleware.js";
 import { listingSchema } from "../schema.js";
 import listingController from "../controllers/listings.js";
 import multer from 'multer';
+import { storage } from "../cloudConfig.js"
 
 // Specify the destination folder for uploaded files
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ storage });
 
 //index & create route (merged with router.route ..)
 router.route("/")
  .get( wrapAsync(listingController.index))
 //  .post( validateListing, wrapAsync(listingController.createListing))
- .post( upload.single('listing[image][url]') ,(req, res) => {
+ .post( upload.single('listing[image]') ,(req, res) => {
     res.send(req.file);
  })
 
