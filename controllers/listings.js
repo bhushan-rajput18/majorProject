@@ -60,7 +60,10 @@ const renderEditForm = async (req, res) => {
         req.flash("error", "listing you requested for doesn not exists ")
         return res.redirect("/listings");
     }
-    res.render("listings/edit.ejs", {listing});
+
+    let originalImageUrl = listing.image.url;
+    originalImageUrl = originalImageUrl.replace("/upload", "/upload/h_300,w_250,c_fill")
+    res.render("listings/edit.ejs", {listing, originalImageUrl});
 
 }
 
@@ -82,7 +85,6 @@ const updateListing = async (req, res) => {
     );
 
     if(typeof req.file !== "undefined") {
-        let listing = await Listing.findByIdAndUpdate(id, {...req.body.listing});
 
 
         let url = req.file.path;

@@ -18,6 +18,13 @@
     </div>
 
     <div class="mb-3">
+        Original Listing Image </br>
+        <img src="<%= originalImageUrl %>" 
+        class="img-thumbnail"
+        style="width: 250px; height: 180px; object-fit: cover;"/>
+    </div>
+
+    <div class="mb-3">
         <lable for="image" class="form-label"> Upload new image </lable> <br> 
         <input name="listing[image]" value="<%= listing.image.url %>" 
         type="file" class="form-control" >
