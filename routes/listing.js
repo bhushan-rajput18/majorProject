@@ -28,14 +28,15 @@ router.get("/new", isLoggedIn, listingController.renderNewForm)
 //show , update and create route (merged with route.route...)
 router.route("/:id")
  .get( wrapAsync(listingController.showListing))
- .put( isLoggedIn, isOwner, validateListing, wrapAsync(listingController.updateListing))
+ .put( isLoggedIn, isOwner, upload.single('listing[image]'),validateListing, wrapAsync(listingController.updateListing))
  .delete( isLoggedIn, wrapAsync(listingController.destroyListing)
 );
 
 
 
 //edit route
-router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(listingController.renderEditForm))
+router.get("/:id/edit", isLoggedIn, isOwner,
+     upload.single('listing[image]'), wrapAsync(listingController.renderEditForm))
 
 
 export default router;

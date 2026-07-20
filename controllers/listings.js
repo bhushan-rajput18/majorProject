@@ -65,12 +65,32 @@ const renderEditForm = async (req, res) => {
 }
 
 const updateListing = async (req, res) => {
+
+    console.log(req.body);
+    console.log(req.file);
+
     if (!req.body || !req.body.listing) {
         throw new ExpressError(400, "Send valid data for listing");
     }
     let {id} = req.params;
 
-    await Listing.findByIdAndUpdate(id, {...req.body.listing});
+    // Always update text fields
+    let listing = await Listing.findByIdAndUpdate(
+        id,
+        { ...req.body.listing },
+        { new: true }
+    );
+
+    if(typeof req.file !== "undefined") {
+        let listing = await Listing.findByIdAndUpdate(id, {...req.body.listing});
+
+
+        let url = req.file.path;
+        let filename = req.file.filename;
+        listing.image = { url, filename };
+        await listing.save();
+
+    }
     req.flash("success", " Listing updated ")
     res.redirect("/listings");
     
