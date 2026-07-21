@@ -1,0 +1,55 @@
+[33m5b33a55[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m first map
+[33mcf89afc[m Remove .env from tracking
+[33m3ebc531[m first map
+[33m3d02d3b[m first map
+[33m4e5e990[m first map
+[33m709dc13[m[33m ([m[1;31morigin/main[m[33m)[m Image Preview for Edit Page
+[33mb0e33dc[m Edit Listing Image
+[33m5e05216[m display image
+[33m053cc62[m Save link in mongos
+[33m02a5457[m storing in cloud
+[33m226fed1[m cloud setup
+[33m4744a84[m manipulating form
+[33mc636072[m re-styling ratings
+[33me322da1[m using router.route
+[33m018a9a2[m MVC for reviews & users
+[33m127837f[m MVC for listings
+[33mdf1df0c[m MVC
+[33m3e56672[m deleting review autherization
+[33m47907e9[m reviws owner name
+[33md891055[m Autherization for reviews
+[33mc6e2394[m Autherization for listings
+[33m4fc2555[m starting with autherization
+[33m23c8a3d[m listing owner
+[33m2206a11[m post-login page
+[33m1f6fa0f[m login after signUp problem solved
+[33m86fa2d8[m adding styling to signin login & placing in navbar
+[33m262ef3b[m logout user
+[33m6d65932[m connecting login route
+[33m33f98fe[m login user -GET & POST
+[33mf253a93[m signup user - POST
+[33m658c0e2[m signup User - GET
+[33m762ca0b[m passport, user model & configuring strategy
+[33m2c7f216[m flash failure msg includes
+[33mec857af[m flash success includes msg for all
+[33m0a48331[m implementing connect-flash in index.ejs after new listing
+[33m889f6e3[m cookie (expiry & httpOnly) in sessionoptions
+[33m381314a[m implimanting express-session in majorproject
+[33m36f2eb6[m express-session, storing & accessing info and connect-flash
+[33m04500a4[m cookies & signedCookies
+[33m0ff7526[m express router listing and review
+[33m2640439[m express router
+[33m369c9e3[m handling delete listing
+[33md5dd90f[m delete review button and functionality
+[33meeac0ba[m styling reviews as cards
+[33m67752f8[m rendering ratings
+[33mefc0d2e[m validations for review
+[33m60d2e32[m creating reviews route
+[33m33f8d6d[m creating review.js and reviewSchema
+[33m8054832[m adding schema.js
+[33med18451[m added expressError class
+[33m53b88e2[m validations & suc and fail text
+[33m031ace9[m styling show listing page is done
+[33mbf313ec[m styling new and edit page form
+[33m0fe3359[m form
+[33m6699191[m initial commit
