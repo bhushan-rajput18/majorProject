@@ -30,7 +30,7 @@ const showListing = async (req, res) => {
         req.flash("error", "listing you requested for doesn not exists ")
         return res.redirect("/listings");
     }
-    console.log(listing)
+    // console.log(listing)
     res.render("listings/show.ejs", { listing });
     
 }
@@ -46,10 +46,9 @@ const createListing = async (req, res, next ) => {
     
     let url = req.file.path;
     let filename = req.file.filename;
-    console.log(url, ".." , filename)
+    // console.log(url, ".." , filename)
 
     let result = listingSchema.validate(req.body);
-    console.log(result);
 
     if(result.error){
         throw new ExpressError(400, result.error);
@@ -62,7 +61,7 @@ const createListing = async (req, res, next ) => {
     newListing.geometry = response.body.features[0].geometry;
 
     let savedListing = await newListing.save();
-    console.log(savedListing);
+    // console.log(savedListing);
     req.flash("success", "new listing created ")
     res.redirect("/listings");
 
@@ -84,8 +83,8 @@ const renderEditForm = async (req, res) => {
 
 const updateListing = async (req, res) => {
 
-    console.log(req.body);
-    console.log(req.file);
+    // console.log(req.body);
+    // console.log(req.file);
 
     if (!req.body || !req.body.listing) {
         throw new ExpressError(400, "Send valid data for listing");
@@ -126,7 +125,7 @@ const destroyListing = async (req, res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);
     req.flash("success", "listing deleted ")
-    console.log(deletedListing);
+    // console.log(deletedListing);
     res.redirect("/listings")
 
 }
