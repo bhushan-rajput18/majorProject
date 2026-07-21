@@ -90,6 +90,12 @@ const updateListing = async (req, res) => {
     if (!req.body || !req.body.listing) {
         throw new ExpressError(400, "Send valid data for listing");
     }
+
+    let response = await geocodingClient.forwardGeocode({
+        query: req.body.listing.location,
+        limit: 1,
+    }).send();
+
     let {id} = req.params;
 
     // Always update text fields
@@ -99,8 +105,9 @@ const updateListing = async (req, res) => {
         { new: true }
     );
 
-    if(typeof req.file !== "undefined") {
+    listing.geometry = response.body.features[0].geometry;
 
+    if(typeof req.file !== "undefined") {
 
         let url = req.file.path;
         let filename = req.file.filename;
@@ -108,8 +115,10 @@ const updateListing = async (req, res) => {
         await listing.save();
 
     }
+
+    await listing.save();
     req.flash("success", " Listing updated ")
-    res.redirect("/listings");
+    res.redirect(`/listings/${id}`);
     
 }
 
