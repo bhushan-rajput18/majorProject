@@ -10,6 +10,7 @@ import path from 'path';
 import  methodOverride  from 'method-override';
 import ExpressError from "./utils/ExpressError.js";
 import session from 'express-session';
+import mongoStore from "connect-mongo";
 import flash from 'connect-flash';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
@@ -41,6 +42,7 @@ import { register } from 'module';
 // const MONGO_URL = 'mongodb://127.0.0.1:27017/wanderlust'
 
 import dns from "dns";
+import { Store } from "express-session";
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 const dbUrl = process.env.ATLASDB_URL;
@@ -59,7 +61,21 @@ async function main() {
 }
 //....................................................
 
+
+const store = mongoStore.create({
+    mongoUrl : dbUrl,
+    crypto: {
+        secret: process.env.SECRET,
+    },
+    touchAfter: 24 * 3600,
+});
+
+store.on("error", () => {
+    console.log("error in mongo session store", err)
+})
+
 const sessionOptions = {
+    store,
     secret: process.env.SECRET,
     resave: false, 
     saveUninitialized: true,
