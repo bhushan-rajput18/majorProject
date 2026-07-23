@@ -1,68 +1,72 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
+
 import Review from "./review.js";
 
 
-main()
-    .then(() => {
-        console.log("connected to DB");
-    })
-    .catch((err) => { 
-        console.log(err);
-    });
-
-async function main() {
-    await mongoose.connect('mongodb://127.0.0.1:27017/wanderlust');
-}
-//.......................
-
-let listingSchema = new Schema ({
+let listingSchema = new Schema({
     title: {
         type: String,
         required: true,
     },
+
     description: String,
+
     image: {
         url: String,
         filename: String,
     },
+
     price: {
-    type: Number,
-    required: true,
-    min: 0
-},
+        type: Number,
+        required: true,
+        min: 0
+    },
+
     location: String,
+
     country: String,
-    reviews: [{
-        type: Schema.Types.ObjectId,
-        ref: "Review"
-    }],
+
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Review"
+        }
+    ],
 
     owner: {
-        type:Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "User"
     },
 
     geometry: {
         type: {
-            type: String, //Dont do `{ location: { type: String }`
-            enum: ['Point'],  //`location.type must be point`
+            type: String,
+            enum: ['Point'],
             required: true,
         },
+
         coordinates: {
             type: [Number],
             required: true,
         }
-    
     }
 });
 
-listingSchema.post("findOneAndDelete", async(listing) => {
-    if(listing) {
-        await Review.deleteMany({_id: {$in: listing.reviews}})
-    }
-})
 
-//creating model with one line
+// Delete all reviews when a listing is deleted
+listingSchema.post("findOneAndDelete", async (listing) => {
+    if (listing) {
+        await Review.deleteMany({
+            _id: {
+                $in: listing.reviews
+            }
+        });
+    }
+});
+
+
+// Creating Model
 const Listing = mongoose.model("Listing", listingSchema);
+
 export default Listing;

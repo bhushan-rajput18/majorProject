@@ -34,8 +34,17 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 //connecting mongoose
+
 import mongoose from 'mongoose';
 import { register } from 'module';
+
+// const MONGO_URL = 'mongodb://127.0.0.1:27017/wanderlust'
+
+import dns from "dns";
+dns.setServers(["1.1.1.1", "8.8.8.8"]);
+
+const dbUrl = process.env.ATLASDB_URL;
+console.log("DB URL:", dbUrl);
 
 main()
     .then(() => {
@@ -46,7 +55,7 @@ main()
     });
 
 async function main() {
-    await mongoose.connect('mongodb://127.0.0.1:27017/wanderlust');
+    await mongoose.connect(dbUrl);
 }
 //....................................................
 

@@ -7,9 +7,14 @@ import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding.js";
 const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken })
 
-const index = async(req, res) => {
+const index = async (req, res) => {
+    console.log("Mongoose readyState:", Listing.db.readyState);
+
+    console.log("Before find");
     const allListings = await Listing.find({});
-    res.render("listings/index.ejs" ,{allListings});
+    console.log("After find");
+
+    res.render("listings/index.ejs", { allListings });
 };
 
 const renderNewForm = async(req, res) => {
@@ -32,7 +37,7 @@ const showListing = async (req, res) => {
     }
     // console.log(listing)
     res.render("listings/show.ejs", { listing });
-    
+    console.log(listing.geometry);
 }
 
 

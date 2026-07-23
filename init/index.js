@@ -4,6 +4,8 @@ import initData from "./data.js";
 // .......
 import mongoose from 'mongoose';
 
+const dbUrl = process.env.ATLASDB_URL;
+
 main()
     .then(() => {
         console.log("connected to DB");
@@ -13,7 +15,7 @@ main()
     });
 
 async function main() {
-    await mongoose.connect('mongodb://127.0.0.1:27017/wanderlust');
+    await mongoose.connect(dbUrl);
 }
 
 const initDB = async () => {
